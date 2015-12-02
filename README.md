@@ -18,4 +18,5 @@ You can use the package as usual, e.g. ```from publicationextensions import Pret
 ## Tutorial
 
 A tutorial on how to use the exensions provided in this repository is available in [here](../master/tutorial/tutorial.md).
+
 We also provide an [example notebook](../master/example/ExampleNotebook.ipynb) demonstrating all the features that come with this repository.
