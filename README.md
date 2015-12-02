@@ -17,4 +17,4 @@ You can use the package as usual, e.g. ```from publicationextensions import Pret
 
 ## Tutorial
 
-A tutorial on how to use the exensions provided in this repository is available in [here](../tutorial/tutorial.md).
+A tutorial on how to use the exensions provided in this repository is available in [here](../master/tutorial/tutorial.md).
