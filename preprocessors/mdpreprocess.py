@@ -11,14 +11,52 @@
 #
 #-----------------------------------------------------------------------------
 
+#-----------------------------------------------------------------------------
+# Imports
+#-----------------------------------------------------------------------------
+
 from IPython.nbconvert.preprocessors import *
 import re
 
+#-----------------------------------------------------------------------------
+# Classes
+#-----------------------------------------------------------------------------
+
 class MarkdownPreprocessor(Preprocessor):
-    def __init__(self, parent):
+    def __init__(self, **kw):
+        """
+        Public constructor
+
+        Parameters
+        ----------
+        config : Config
+            Configuration file structure
+        `**kw`
+            Additional keyword arguments passed to parent
+        """
+
         self.colormatch = re.compile(r"<font color='(.*?)'>(.*?)</font>")
 
+        super(MarkdownPreprocessor, self).__init__(**kw)
+
     def preprocess(self, nb, resources):
+        """
+        Preprocessing to apply on each notebook.
+
+        Must return modified nb, resources.
+
+        If you wish to apply your preprocessing to each cell, you might want
+        to override preprocess_cell method instead.
+
+        Parameters
+        ----------
+        nb : NotebookNode
+            Notebook being converted
+        resources : dictionary
+            Additional resources used in the conversion process.  Allows
+            preprocessors to pass variables into the Jinja engine.
+        """
+
         for index, cell in enumerate(nb.cells):
             nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
         return nb, resources
