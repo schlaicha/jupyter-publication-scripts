@@ -18,7 +18,7 @@ If you want to convert your notebooks using `nbconvert`, you will need a preproc
 ### cite2c
 This is a very useful plugin, that easily manages citations in the notebook. Clone the [git repository](https://github.com/takluyver/cite2c) and run `python install.py`.
 
-It connects to the Zotero (www.zotero.org) citation management system, that works from within the browser. It's free and I can truly recommend it. You will need a Zotero ID to use this plugin. If you first click on one of the buttons in button bar of the notebook it will ask for your Zotero ID, which is **not** your username. To get it, log into Zotero and go to `Settings->Feeds/Api`. Note that you also have to make your article library publically available (`Settings->Privacy->Publish entire library`), since unfortunately the plugin does not make use of the auth mechanism. Keep also in mind that the choice of the userid for the plugin is a global one and is not stored on a per-notebook basis.
+It connects to the Zotero (www.zotero.org) citation management system, that works from within the browser. It's free and I can truly recommend it. You will need a Zotero ID to use this plugin. If you first click on one of the buttons in button bar of the notebook it will ask for your Zotero ID, which is **not** your username. To get it, log into Zotero and go to `Settings->Feeds/Api`. Note that you also have to make your article library publicly available (`Settings->Privacy->Publish entire library`), since unfortunately the plugin does not make use of the auth mechanism. Keep also in mind that the choice of the userid for the plugin is a global one and is not stored on a per-notebook basis.
 
 For conversion you will also need the preprocessor I provide below.
 
@@ -55,7 +55,7 @@ plt.rcParams['text.latex.preamble'] = "\usepackage{subdepth}, \usepackage{type1c
 ```
 
 ### Create tables with python code
-While you can write nice tables in the markdown cells and using the `python-markdown` plugin even have dynamic content, there is no builtin way to convert arrays directly to a nice table. This is where i wrote the [PrettyTable.py](PrettyTable.py) class for. You can than write something like this:
+While you can write nice tables in the markdown cells and using the `python-markdown` plugin even have dynamic content, there is no builtin way to convert arrays directly to a nice table. This is where i wrote the [PrettyTable.py](../publicationextensions/PrettyTable.py) class for. You can than write something like this:
 ```python
 data = np.array([[1,2,3],[2,3,4]])
 pt.PrettyTable(data, [r"$\frac{a}{b}$", r"$b$", r"$c$"])
@@ -65,7 +65,7 @@ Make sure that the `pt.PrettyTable` command is always in the last line of the in
 Although i didn't thoroughly tested it, it should give nice output for both HTML and LaTeX/pdf.
 
 ### Reading large text files
-Reading text files using `numpy` is unfortunately not the fastest thing. The `numpy.loadtxt()` function loads the full file into the memory first, which makes it memory consuming and slow for large files. It also supports only one comment character, but the `.xvg` files I frequently use have to different beginning characters for non-data lines. I was also not satisfied by the other options provided by `numpy`, so here is what I came up with, to have a relatively convenient function for loading twodimensional large text files with numerical data:
+Reading text files using `numpy` is unfortunately not the fastest thing. The `numpy.loadtxt()` function loads the full file into the memory first, which makes it memory consuming and slow for large files. It also supports only one comment character, but the `.xvg` files I frequently use have to different beginning characters for non-data lines. I was also not satisfied by the other options provided by `numpy`, so here is what I came up with, to have a relatively convenient function for loading two dimensional large text files with numerical data:
 ```python
 def loadtxt(filename, ncols=None, dtyp=None, commentchars=["#","@"]):
     global data
@@ -81,7 +81,7 @@ def loadtxt(filename, ncols=None, dtyp=None, commentchars=["#","@"]):
 ```
 
 ### Saving data using numpy.savez
-I often include computationally expensive data analysis in my notebook instead of implementing them as external tools. Since I would have to recalculate these if I restart the kernel for some reason, it is reasonable to save them using the `numpy.savez()` routine. I usually define a `data_dir` variable in the beginning of the notebook, where the datafiles are to be stored. I then use the following code template in each cell where I do expensive things and change the `recalc` variable if I need to recompute this cell:
+I often include computationally expensive data analysis in my notebook instead of implementing them as external tools. Since I would have to recalculate these if I restart the kernel for some reason, it is reasonable to save them using the `numpy.savez()` routine. I usually define a `data_dir` variable in the beginning of the notebook, where the data files are to be stored. I then use the following code template in each cell where I do expensive things and change the `recalc` variable if I need to recompute this cell:
 ```python
 recalc = False
 
@@ -107,11 +107,11 @@ The exporter template I provide below supports author, title and affiliation to 
 ```python
 "latex_metadata": {
   "title": "Amazing Article",
-  "author": "Julius C. F. Schulz",
+  "author": "Julius C. F. Schulz, John N. Doe",
   "affiliation": "Freie Universit\\\"at Berlin, Fachbereich Physik, 14195 Berlin, Germany"
 },
 ```
-Note that you might or might not put the trailing comma in there depending on whether this section is last. Due to the cite2c plugin the metadata can also get quite lenghty, so you probably have to do a good amount of scrolling, if you don't do this right at the beginning of writing your notebook.
+Note that you might or might not put the trailing comma in there depending on whether this section is last. Due to the cite2c plugin the metadata can also get quite lengthy, so you probably have to do a good amount of scrolling, if you don't do this right at the beginning of writing your notebook.
 
 ### Markdown and LaTeX
 You can us LaTeX code in your markdown cells through `MathJax` and even the AMSMath environments like `equation`, `align`, etc. are available.
@@ -126,24 +126,24 @@ One issue however remains and this is equation numbering. I haven't yet found a 
 
 ... \ref{eq1} ...
 ```
-This way, the equation can be properly referenced in the ipython notebook using `eq1` as the reference handle and `eq1text` as the reference text. It does not provide automatic numbering however. It also required a browser refresh for me to work after executing the markdown cell.
+This way, the equation can be properly referenced in the IPython notebook using `eq1` as the reference handle and `eq1text` as the reference text. It does not provide automatic numbering however. It also required a browser refresh for me to work after executing the markdown cell.
 
 So choose whichever way suits you. Note that sometimes the `\label{...}` command fucks up the markdown conversion and the raw LaTeX code is displayed. In this case just refresh the browser.
 
 Note: I recently found this [plugin](https://github.com/ipython-contrib/IPython-notebook-extensions/tree/master/nbextensions/usability/equation-numbering). I have yet to try it, but it might resolve the issues.
 
 ### Figures
-Figures are some particularly problematic subject, since there is no direct way to embed captions from matplotlib. The standard way of `nbconvert` also does not put them as floating figures in the LaTeX code but directly puts them at their point of occurence. Below I will discuss how to modify the `nbconvert` templates to put in figures as floats. Now I will discuss, how to use these extensions. The additional data is stored in the cell metadata of the plot creating input cells. To edit them, you will first need to activate the `Edit Metadata` button in the button bar of the ipython notebook:
+Figures are some particularly problematic subject, since there is no direct way to embed captions from matplotlib. The standard way of `nbconvert` also does not put them as floating figures in the LaTeX code but directly puts them at their point of occurrence. Below I will discuss how to modify the `nbconvert` templates to put in figures as floats. Now I will discuss, how to use these extensions. The additional data is stored in the cell metadata of the plot creating input cells. To edit them, you will first need to activate the `Edit Metadata` button in the button bar of the IPython notebook:
 
 ![Activating Edit Metadata Button](edit_metadata_toolbar.png)
 
 Next click the `Edit Metadata` button of the respective input cell:
 
-![Edit Metadata Button](edit_metadata_button.png?resize=700)
+![Edit Metadata Button](edit_metadata_button.png)
 
 You should get a screen like this:
 
-![Edit Figure Metadata](edit_metadata.png?resize=600)
+![Edit Figure Metadata](edit_metadata.png)
 
 You should add the lines present in the screenshot:
 ```javascript
@@ -156,12 +156,12 @@ The last line is optional and creates a double column picture if a two-column la
 
 The label can be used together with `\ref{fig:somelabel}` in markdown cells, however since the notebook does not really know the label, it will only show `???` there. But the inside the LaTeX/pdf conversion things work beautifully.
 
-I recommend to have the last command in the plottin input cell to have a trailing semicolon to avoid any annoying output cells.
+I recommend to have the last command in the plotting input cell to have a trailing semicolon to avoid any annoying output cells.
 
 ### Citations
 Citations are an important part of any scientific work. The cite2c plugin described above is very useful for embedding them into IPython/Jupyter notebooks. The plugin adds two buttons to the button bar.
 
-![Cite2C buttons](cite2c_buttons.png?resize=600)
+![Cite2C buttons](cite2c_buttons.png)
 
 With the first you can search your Zotero library and add a citation at the current cursor position in a Markdown cell. The bibliographic data is embedded into the notebook so if the notebook is shared with other people they do not need access to your Zotero account.
 
@@ -172,7 +172,7 @@ Using the preprocessor described below, the bibliographic data can be converted 
 # Converting notebook to LaTeX/PDF
 With the `nbconvert` command IPython/Jupyter provide an amazing way of converting the notebook to a variety of formats, most notably HTML and LaTeX. For converting the notebook to LaTeX with all of the above features you will need four additional files: the `pymdpreprocessor.py` preprocessor, the `bibpreprocessor.py` preprocessor, a suitable template file (eg. the `revtex_nocode.tplx` file provided by me) and a config file.
 
-The config file should be named `jupyter_nbconvert_config.py` or `ipython_nbconvert_config.py`, depending on whether you use IPython or Jupyter. Note that this is not determined if you use `ipython nbconvert` or `jupyter nbconvert` but by the installed backend, this would typically Jupyter if you have an up-to-date installation. The configuration file has to be placed in the same directory as the notebook and contain the followin content (you might have to change the name of the template file):
+The config file should be named `jupyter_nbconvert_config.py` or `ipython_nbconvert_config.py`, depending on whether you use IPython or Jupyter. Note that this is not determined if you use `ipython nbconvert` or `jupyter nbconvert` but by the installed backend, this would typically Jupyter if you have an up-to-date installation. The configuration file has to be placed in the same directory as the notebook and contain the following content (you might have to change the name of the template file):
 ```python
 c = get_config()
 c.Exporter.preprocessors = [ 'bibpreprocessor.BibTexPreprocessor', 'pymdpreprocessor.PyMarkdownPreprocessor' ]
@@ -183,7 +183,7 @@ The `pymdpreprocessor.py` is provided in the `nbextensions` git repository and h
 
 The [`revtex_nocode.tplx` file](../templates/revtex_nocode.tplx) will create a LaTeX file for a double column article using the RevTex document class. The details are described further down. Note that this file has to be in the directory of the notebook, stating a different directory in the config file unfortunately does not work.
 
-If all is layed out as above, the command to convert the notebook to a LaTeX file is `ipython nbconvert --to=latex SomeNotebook.ipynb` or `jupyter nbconvert --to=latex SomeNotebook.ipynb`. This creates a `SomeNotebook.tex` source file along with a `SomeNotebook_files` folder containing the images and the BibTex file. While `nbconvert` does have a `--to=pdf` option that automatically creates a LaTeX file and runs `pdflatex` to create the pdf file, at least on my machine it unfortunately does not call the `bibtex` command. So I suggest to write a little script like this to automate things:
+If all is laid out as above, the command to convert the notebook to a LaTeX file is `ipython nbconvert --to=latex SomeNotebook.ipynb` or `jupyter nbconvert --to=latex SomeNotebook.ipynb`. This creates a `SomeNotebook.tex` source file along with a `SomeNotebook_files` folder containing the images and the BibTex file. While `nbconvert` does have a `--to=pdf` option that automatically creates a LaTeX file and runs `pdflatex` to create the pdf file, at least on my machine it unfortunately does not call the `bibtex` command. So I suggest to write a little script like this to automate things:
 ```sh
 #!/bin/bash
 
@@ -201,7 +201,7 @@ The following sections describe the technical details and are only for the inter
 ### BibTex-Preprocessors
 The cite2c plugin stores its bibliographical information in the metadata of the notebook. The LaTeX typesetting needs a BibTex file however. Furthermore, the citations in the text are based on HTML and are not understood by TeX. We therefore need the preprocessing ability of `nbconvert`. This is done by the `BibTexPreprocessor` class in the [bibpreprocessor.py file](../preprocessors/bibpreprocessor.py).
 
-Any prepocessor class has to inherit from `IPython.nbconvert.preprocessors.Preprocessor`. Then the overloaded `preprocess()` function is called. In there we first call the `create_bibfile()` method, that creates a `.bib` file from the bibliographic entries in `nb["metadata"]["cite2c"]["citations"]`. So far only article-type references are implemented, however this can easily be extendend. Unfortunately, BibTex does not deal well with Unicode characters, even the error message is very cryptic. For the author name and the journal name I therefore use the funtion `replace_char()` to replace some common non-ASCII characters. This might also have to be extended further.
+Any prepocessor class has to inherit from `IPython.nbconvert.preprocessors.Preprocessor`. Then the overloaded `preprocess()` function is called. In there we first call the `create_bibfile()` method, that creates a `.bib` file from the bibliographic entries in `nb["metadata"]["cite2c"]["citations"]`. So far only article-type references are implemented, however this can easily be extended. Unfortunately, BibTex does not deal well with Unicode characters, even the error message is very cryptic. For the author name and the journal name I therefore use the function `replace_char()` to replace some common non-ASCII characters. This might also have to be extended further.
 
 After creating the BibTex file we have to replace the bibliography part in the text. We therefore loop over all cells and look for `<div class="cite2c-biblio"></div>` and replace it with the `\bibliography` command for the TeX source code (in `preprocess_cell()` method). The individual citations are conveniently already converted by `nbconvert`.
 
@@ -274,7 +274,7 @@ The default behaviour of `nbconvert` is to use the notebook filename as the titl
 I also add the current date. Since RevTex expects author, title etc. below `\begin{document}` they have to be in the `maketitle` block.
 
 #### Figures
-As described above, the figure caption etc. is stored in the cells metadata. Depending on the data type (`application/pdf`, `image/png`, ...) and a priority list, on data block is chosen by `nbconvert. If the appropriate metedata is present, we either call the `draw_figure_with_caption()` or `draw_widefigure_with_caption()` macro. See `revtex_nocode.tplx` for full code.
+As described above, the figure caption etc. is stored in the cells metadata. Depending on the data type (`application/pdf`, `image/png`, ...) and a priority list, on data block is chosen by `nbconvert. If the appropriate metadata is present, we either call the `draw_figure_with_caption()` or `draw_widefigure_with_caption()` macro. See `revtex_nocode.tplx` for full code.
 
 ```
 ((*- block data_pdf -*))
