@@ -19,4 +19,4 @@ You can use the package as usual, e.g. ```from publicationextensions import Pret
 
 A tutorial on how to use the exensions provided in this repository is available in [here](../master/tutorial/tutorial.md).
 
-We also provide an [example notebook](../master/example/ExampleNotebook.ipynb) demonstrating all the features that come with this repository.
+We also provide an [example notebook](../master/example/ExampleNotebook.ipynb) demonstrating all the features that come with this repository. (Although github can render notebooks, since the interesting features are added with this repository and other extensions, they are not properly displayed.)
