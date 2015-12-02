@@ -8,9 +8,13 @@ http://blog.juliusschulz.de/blog/ultimate-ipython-notebook.
 
 ## Installation
 
-Run ```python setup.py``` to install the extension. In order to install into
+Run ```python setup.py install``` to install the extension. In order to install into
 the user directory add ```--user``` option.
 
 ## Usage
 
 You can use the package as usual, e.g. ```from publicationextensions import PrettyTable```
+
+## Tutorial
+
+A tutorial on how to use the exensions provided in this repository is available in [here](../master/tutorial/tutorial.md).
