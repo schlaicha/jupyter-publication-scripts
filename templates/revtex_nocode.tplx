@@ -128,6 +128,24 @@
 ((*- endmacro *))
 
 
+((* block execute_result scoped *))
+    ((*- for type in output.data | filter_data_type -*))
+        ((*- if type in ['text/latex']: -*))
+            ((*- if cell.metadata.caption: -*))
+                ((*- if cell.metadata.label: -*))
+                    ((( output.data['text/latex'].replace("\end{longtable}", "\caption{"+cell.metadata.caption+"}" + "\label{"+cell.metadata.label+"}" + "\end{longtable}")  )))
+                ((*- else -*))
+                    ((( output.data['text/latex'].replace("\end{longtable}", "\caption{"+cell.metadata.caption+"}" + "\end{longtable}")  )))
+                ((*- endif -*))
+            ((*- else -*))
+                (((output.data['text/latex'])))
+            ((*- endif -*))
+        ((*- else -*))
+            ((( super() )))
+        ((*- endif -*))
+    ((*- endfor -*))
+((* endblock execute_result *))
+
 
 % Disable input cells
 ((* block input_group *))
