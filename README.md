@@ -8,7 +8,7 @@ http://blog.juliusschulz.de/blog/ultimate-ipython-notebook.
 
 ## Installation
 
-Run ```python setup.py``` to install the extension. In order to install into
+Run ```python setup.py install``` to install the extension. In order to install into
 the user directory add ```--user``` option.
 
 ## Usage
