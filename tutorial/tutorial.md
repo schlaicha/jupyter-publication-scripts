@@ -104,7 +104,7 @@ A lot has been written by other people already on how to use the IPython/Jupyter
 
 ### Document Metadata
 The exporter template I provide below supports author, title and affiliation to be stored in the notebook's metadata. For that go to `Edit->Edit Notebook Metadata` and add:
-```
+```python
 "latex_metadata": {
   "title": "Amazing Article",
   "author": "Julius C. F. Schulz",
@@ -117,7 +117,7 @@ Note that you might or might not put the trailing comma in there depending on wh
 You can us LaTeX code in your markdown cells through `MathJax` and even the AMSMath environments like `equation`, `align`, etc. are available.
 
 One issue however remains and this is equation numbering. I haven't yet found a way that makes me entirely happy. What works somewhat decent if you only intend to export pdf anyway is just use traditional latex commands `\label{eq:someeq}` in the formula and later on `\ref{eq:someeq}` when you cite your equation. The issue is that this way, in the notebook itself only `???` is displayed at the reference. To avoid this you can also write something like this:
-```
+```latex
 \begin{equation}
 \int f(x)\,\text{d}x = F(x)
 \label{eq1}
@@ -125,7 +125,6 @@ One issue however remains and this is equation numbering. I haven't yet found a 
 \end{equation}
 
 ... \ref{eq1} ...
-
 ```
 This way, the equation can be properly referenced in the ipython notebook using `eq1` as the reference handle and `eq1text` as the reference text. It does not provide automatic numbering however. It also required a browser refresh for me to work after executing the markdown cell.
 
@@ -147,7 +146,7 @@ You should get a screen like this:
 ![Edit Figure Metadata](edit_metadata.png?resize=600)
 
 You should add the lines present in the screenshot:
-```
+```javascript
 "caption": "somecaption",
 "label": "fig:somelabel",
 "widefigure": true
@@ -180,12 +179,12 @@ c.Exporter.preprocessors = [ 'bibpreprocessor.BibTexPreprocessor', 'pymdpreproce
 c.Exporter.template_file = 'revtex_nocode.tplx'
 ```
 
-The `pymdpreprocessor.py` is provided in the `nbextensions` git repository and has to be in the `$PYTHONPATH` environment variable or also in the same directory as the notebook. The `bibprepreprocessor.py` file can be obtained [here](bibpreprocessor.py) and is described below if you are interested in the details.
+The `pymdpreprocessor.py` is provided in the `nbextensions` git repository and has to be in the `$PYTHONPATH` environment variable or also in the same directory as the notebook. The `bibprepreprocessor.py` file can be obtained [here](../preprocessors/bibpreprocessor.py) and is described below if you are interested in the details.
 
 The [`revtex_nocode.tplx` file](revtex_nocode.tplx) will create a LaTeX file for a double column article using the RevTex document class. The details are described further down. Note that this file has to be in the directory of the notebook, stating a different directory in the config file unfortunately does not work.
 
 If all is layed out as above, the command to convert the notebook to a LaTeX file is `ipython nbconvert --to=latex SomeNotebook.ipynb` or `jupyter nbconvert --to=latex SomeNotebook.ipynb`. This creates a `SomeNotebook.tex` source file along with a `SomeNotebook_files` folder containing the images and the BibTex file. While `nbconvert` does have a `--to=pdf` option that automatically creates a LaTeX file and runs `pdflatex` to create the pdf file, at least on my machine it unfortunately does not call the `bibtex` command. So I suggest to write a little script like this to automate things:
-```
+```sh
 #!/bin/bash
 
 ipython nbconvert --to=latex --template=revtex_nocode.tplx SomeNotebook.ipynb
@@ -200,14 +199,14 @@ rm *.bbl *.aux *.blg *.log *.out *Notes.bib #*.tex
 The following sections describe the technical details and are only for the interested reader.
 
 ### BibTex-Preprocessors
-The cite2c plugin stores its bibliographical information in the metadata of the notebook. The LaTeX typesetting needs a BibTex file however. Furthermore, the citations in the text are based on HTML and are not understood by TeX. We therefore need the preprocessing ability of `nbconvert`. This is done by the `BibTexPreprocessor` class in the [bibpreprocessor.py file](bibpreprocessor.py).
+The cite2c plugin stores its bibliographical information in the metadata of the notebook. The LaTeX typesetting needs a BibTex file however. Furthermore, the citations in the text are based on HTML and are not understood by TeX. We therefore need the preprocessing ability of `nbconvert`. This is done by the `BibTexPreprocessor` class in the [bibpreprocessor.py file](../preprocessors/bibpreprocessor.py).
 
 Any prepocessor class has to inherit from `IPython.nbconvert.preprocessors.Preprocessor`. Then the overloaded `preprocess()` function is called. In there we first call the `create_bibfile()` method, that creates a `.bib` file from the bibliographic entries in `nb["metadata"]["cite2c"]["citations"]`. So far only article-type references are implemented, however this can easily be extendend. Unfortunately, BibTex does not deal well with Unicode characters, even the error message is very cryptic. For the author name and the journal name I therefore use the funtion `replace_char()` to replace some common non-ASCII characters. This might also have to be extended further.
 
 After creating the BibTex file we have to replace the bibliography part in the text. We therefore loop over all cells and look for `<div class="cite2c-biblio"></div>` and replace it with the `\bibliography` command for the TeX source code (in `preprocess_cell()` method). The individual citations are conveniently already converted by `nbconvert`.
 
 ### Templates
-The `nbconvert` command utilises templates to convert the notebook into different formats. These are built in a modular way and can be easily extended. They usually come with the extension `.tplx`. [Here](revtex_nocode.tplx) I present a template for a double column article based on the RevTex LaTeX document class. Writing template files is blockbased. Further information can be found [here](http://nbviewer.ipython.org/github/jupyter/nbconvert/blob/master/docs/source/customizing.ipynb).
+The `nbconvert` command utilises templates to convert the notebook into different formats. These are built in a modular way and can be easily extended. They usually come with the extension `.tplx`. [Here](../templates/revtex_nocode.tplx) I present a template for a double column article based on the RevTex LaTeX document class. Writing template files is blockbased. Further information can be found [here](http://nbviewer.ipython.org/github/jupyter/nbconvert/blob/master/docs/source/customizing.ipynb).
 
 #### LaTeX documentclass and preamble
 ```
