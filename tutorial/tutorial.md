@@ -181,7 +181,7 @@ c.Exporter.template_file = 'revtex_nocode.tplx'
 
 The `pymdpreprocessor.py` is provided in the `nbextensions` git repository and has to be in the `$PYTHONPATH` environment variable or also in the same directory as the notebook. The `bibprepreprocessor.py` file can be obtained [here](../preprocessors/bibpreprocessor.py) and is described below if you are interested in the details.
 
-The [`revtex_nocode.tplx` file](revtex_nocode.tplx) will create a LaTeX file for a double column article using the RevTex document class. The details are described further down. Note that this file has to be in the directory of the notebook, stating a different directory in the config file unfortunately does not work.
+The [`revtex_nocode.tplx` file](../templates/revtex_nocode.tplx) will create a LaTeX file for a double column article using the RevTex document class. The details are described further down. Note that this file has to be in the directory of the notebook, stating a different directory in the config file unfortunately does not work.
 
 If all is layed out as above, the command to convert the notebook to a LaTeX file is `ipython nbconvert --to=latex SomeNotebook.ipynb` or `jupyter nbconvert --to=latex SomeNotebook.ipynb`. This creates a `SomeNotebook.tex` source file along with a `SomeNotebook_files` folder containing the images and the BibTex file. While `nbconvert` does have a `--to=pdf` option that automatically creates a LaTeX file and runs `pdflatex` to create the pdf file, at least on my machine it unfortunately does not call the `bibtex` command. So I suggest to write a little script like this to automate things:
 ```sh
