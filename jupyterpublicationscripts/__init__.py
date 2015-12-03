@@ -100,7 +100,7 @@ def _activate(profile):
                 # but cannot do anything automatically if contents_manager_class is set
                 # raise ValueError('You already got some configuration that will conflict with the preprocessors. Bailin out')
                 if not 'mdpreprocess.MarkdownPreprocessor' in config.Exporter.preprocessors:
-                    config['Exporter']['preprocessors'].append('mdpreprocess.MarkdownPreprocessor')
+                    config['Exporter']['preprocessors'].append('pre_markdown.MarkdownPreprocessor')
             else:
                 my_config  = JSONFileConfigLoader('jupyter_nbconvert_config.json', dname).load_config()
                 config.merge(my_config)
@@ -119,7 +119,7 @@ def deactivate(profile='default'):
             deact=False
         if deact:
             if 'mdpreprocess.MarkdownPreprocessor' in config.Exporter.preprocessors:
-                del config.Exporter.preprocessors[config.Exporter.preprocessors.index('mdpreprocess.MarkdownPreprocessor')]
+                del config.Exporter.preprocessors[config.Exporter.preprocessors.index('pre_markdown.MarkdownPreprocessor')]
 
 def main(argv=None):
     import argparse
