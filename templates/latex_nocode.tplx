@@ -1,0 +1,19 @@
+((*- extends 'article.tplx' -*))
+
+((* block author *)) \author{((( nb.metadata["latex_metadata"]["author"] | ascii_only | escape_latex )))} ((* endblock author *))
+((* block title *)) \title{((( nb.metadata["latex_metadata"]["title"] | ascii_only | escape_latex )))} ((* endblock title *))
+
+% Draw a figure using the graphicx package.
+((* macro draw_figure(filename) -*))
+((* set filename = filename | posix_path *))
+((*- block figure scoped -*))
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.4\paperheight}}{((( filename )))}
+    \end{center}
+    { \hspace*{\fill} \\}
+((*- endblock figure -*))
+((*- endmacro *))
+
+% Disable input cells
+((* block input_group *))
+((* endblock input_group *))
