@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """This preprocessor replaces bibliography code in markdowncell
 """
 
@@ -34,7 +36,7 @@ class BibTexPreprocessor(Preprocessor):
             Additional keyword arguments passed to parent
         """
 
-        super(MarkdownPreprocessor, self).__init__(**kw)
+        super(BibTexPreprocessor, self).__init__(**kw)
 
     def replace_chars(self, toreplace):
         """
