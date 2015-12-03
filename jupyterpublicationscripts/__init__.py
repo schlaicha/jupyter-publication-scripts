@@ -96,14 +96,15 @@ def _activate(profile):
     with jconfig(profile) as config:
         if "Exporter" in config:
             if (config["Exporter"].get("preprocessors",{})):
-                # TODO, manually merge tornado setting if exist
-                # but cannot do anything automatically if contents_manager_class is set
-                # raise ValueError('You already got some configuration that will conflict with the preprocessors. Bailin out')
-                if not 'mdpreprocess.MarkdownPreprocessor' in config.Exporter.preprocessors:
+                # manually merge setting if exist
+                if not 'pre_markdown.MarkdownPreprocessor' in config.Exporter.preprocessors:
                     config['Exporter']['preprocessors'].append('pre_markdown.MarkdownPreprocessor')
+                if not 'pre_cit2c.BibTexPreprocessor' in config.Exporter.preprocessors:
+                    config['Exporter']['preprocessors'].append('pre_cite2c.BibTexPreprocessor')
             else:
                 my_config  = JSONFileConfigLoader('jupyter_nbconvert_config.json', dname).load_config()
                 config.merge(my_config)
+
         if not JUPYTER:
             log.info('Activating preprocessors for profile "%s"' % profile)
         else:
@@ -118,8 +119,10 @@ def deactivate(profile='default'):
         if not 'preprocessors' in config.Exporter:
             deact=False
         if deact:
-            if 'mdpreprocess.MarkdownPreprocessor' in config.Exporter.preprocessors:
+            if 'pre_markdown.MarkdownPreprocessor' in config.Exporter.preprocessors:
                 del config.Exporter.preprocessors[config.Exporter.preprocessors.index('pre_markdown.MarkdownPreprocessor')]
+            if 'pre_cite2c.BibTexPreprocessor' in config.Exporter.preprocessors:
+                del config.Exporter.preprocessors[config.Exporter.preprocessors.index('pre_cite2c.BibTexPreprocessor')]
 
 def main(argv=None):
     import argparse

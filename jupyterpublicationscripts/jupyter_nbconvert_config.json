@@ -1,7 +1,8 @@
 {
   "Exporter": {
     "preprocessors": [
-      "mdpreprocess.MarkdownPreprocessor"
+      "pre_markdown.MarkdownPreprocessor",
+      "pre_cite2c.BibtexPreprocessor"
     ]
   },
   "version": 1

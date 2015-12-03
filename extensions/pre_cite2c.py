@@ -13,6 +13,7 @@
 #-----------------------------------------------------------------------------
 # Imports
 #-----------------------------------------------------------------------------
+from __future__ import print_function
 
 from nbconvert.preprocessors import *
 import re
@@ -155,7 +156,7 @@ class BibTexPreprocessor(Preprocessor):
           self.references = nb["metadata"]["cite2c"]["citations"]
           self.create_bibfile(resources["output_files_dir"]+"/"+resources["unique_key"]+".bib")
         except:
-          print "Did not find cite2c"
+          print ("Did not find cite2c")
         for index, cell in enumerate(nb.cells):
             nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
         return nb, resources
