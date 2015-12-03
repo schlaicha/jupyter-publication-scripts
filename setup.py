@@ -15,10 +15,6 @@ from jupyter_core.paths import jupyter_config_dir, jupyter_data_dir
 import os
 import shutil
 
-
-### from nbextensions ###
-
-
 # http://stackoverflow.com/questions/12683834/how-to-copy-directory-recursively-in-python-and-overwrite-all
 def recursive_overwrite(src, dest, ignore=None):
     if os.path.isdir(src):
