@@ -14,7 +14,7 @@
 # Imports
 #-----------------------------------------------------------------------------
 
-from IPython.nbconvert.preprocessors import *
+from ipython_nbconvert.preprocessors import *
 import re
 import os
 import sys
