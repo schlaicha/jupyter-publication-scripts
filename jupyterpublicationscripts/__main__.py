@@ -1,0 +1,2 @@
+import jupyterpublicationscripts
+jupyterpublicationscripts.main()

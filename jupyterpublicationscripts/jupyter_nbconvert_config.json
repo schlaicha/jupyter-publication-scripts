@@ -1,0 +1,8 @@
+{
+  "Exporter": {
+    "preprocessors": [
+      "mdpreprocess.MarkdownPreprocessor"
+    ]
+  },
+  "version": 1
+}
