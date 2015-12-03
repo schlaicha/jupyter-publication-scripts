@@ -60,3 +60,8 @@ destination = os.path.join(data_dir, 'extensions')
 print("Install Python extensions to %s" % destination)
 recursive_overwrite(src, destination)
 
+# Install templates
+src = 'templates'
+destination = os.path.join(data_dir, 'templates')
+print("Install templates to %s" % destination)
+recursive_overwrite(src, destination)
