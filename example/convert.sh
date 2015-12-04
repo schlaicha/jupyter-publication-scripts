@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #only necessary on strange jupyter/ipython transition setups
-export PYTHONPATH="../preprocessors/:$HOME/.ipython/nbextensions/usability/python-markdown/:$PYTHONPATH"
+#export PYTHONPATH="../preprocessors/:$HOME/.ipython/nbextensions/usability/python-markdown/:$PYTHONPATH"
 
 # convert ipython notebook to latex
 ipython nbconvert --to=latex ExampleNotebook.ipynb
@@ -14,4 +14,4 @@ pdflatex ExampleNotebook.tex > /dev/null 2>&1
 
 # cleanup temorary conversion and latex files
 rm *.bbl *.aux *.blg *.log *.out *Notes.bib *.tex
-rm -rf ExampleNotebook_files
+#rm -rf ExampleNotebook_files
