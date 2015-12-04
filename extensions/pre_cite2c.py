@@ -19,6 +19,7 @@ from nbconvert.preprocessors import *
 import re
 import os
 import sys
+import unicode_tex
 
 #-----------------------------------------------------------------------------
 # Classes
@@ -82,7 +83,7 @@ class BibTexPreprocessor(Preprocessor):
         """
         returns a string with a bibtex-entry from cite2c reference data.
         currently pretty basic implemetation, does only create article entries.
-        non-ascii characters are only checked for in autor and journal name, characterset is also limited!!
+        non-ascii characters are only checked for in autor, title and journal name
 
         Parameters
         ----------
@@ -94,15 +95,15 @@ class BibTexPreprocessor(Preprocessor):
         entry  = "@article{" + refkey + ",\n"
 
         entry += "  author = {"
-        entry += " and ".join(map(lambda a: self.replace_chars(a["family"]) + ", " + self.replace_chars(a["given"]), reference["author"]))
+        entry += " and ".join(map(lambda a: unicode_tex.unicode_to_tex(a["family"]) + ", " + unicode_tex.unicode_to_tex(a["given"]), reference["author"]))
         entry += "}, \n"
 
         if ("title" in reference):
-            entry += "  title = {" + reference["title"] + "}, \n"
+            entry += "  title = {" + unicode_tex.unicode_to_tex(reference["title"]) + "}, \n"
         if ("issued" in reference):
             entry += "  year = {" + reference["issued"]["year"] + "}, \n"
         if ("container-title" in reference):
-            entry += "  journal = {" + self.replace_chars(reference["container-title"]) + "}, \n"
+            entry += "  journal = {" + unicode_tex.unicode_to_tex(reference["container-title"]) + "}, \n"
         if ("page" in reference):
             entry += "  pages = {" + re.sub("-", "--", reference["page"]) + "}, \n"
         if ("volume" in reference):
