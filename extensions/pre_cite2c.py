@@ -19,7 +19,13 @@ from nbconvert.preprocessors import *
 import re
 import os
 import sys
-import unicode_tex_mod as unicode_tex
+import unicode_tex
+
+# unicode_tex replaces also spaces, this causes problems with bibtex and is undesirable anyway
+try:
+    del unicode_tex.unicode_to_tex_map[u' ']
+except KeyError:
+    pass
 
 #-----------------------------------------------------------------------------
 # Classes
