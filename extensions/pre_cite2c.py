@@ -19,7 +19,7 @@ from nbconvert.preprocessors import *
 import re
 import os
 import sys
-import unicode_tex
+import unicode_tex_mod as unicode_tex
 
 #-----------------------------------------------------------------------------
 # Classes
@@ -39,45 +39,6 @@ class BibTexPreprocessor(Preprocessor):
         """
 
         super(BibTexPreprocessor, self).__init__(**kw)
-
-    def replace_chars(self, toreplace):
-        """
-        replaces non-ascii characters in string with latex version, currently only limited characterset
-
-        Parameters
-        ----------
-        toreplace: str
-            string to replace characters in
-        """
-        new = ""
-        for c in toreplace:
-            if c==u"&":
-                new += r"\&"
-            elif c==u"á":
-                new += r"\'a"
-            elif c==u"é":
-                new += r"\'e"
-            elif c==u"ó":
-                new += r"\'o"
-            elif c==u"ú":
-                new += r"\'u"
-            elif c==u"à":
-                new += r"\`a"
-            elif c==u"ò":
-                new += r"\`o"
-            elif c==u"ù":
-                new += r"\`u"
-            elif c==u"ä":
-                new += r"\"a"
-            elif c==u"ö":
-                new += r"\"o"
-            elif c==u"ü":
-                new += r"\"u"
-            elif c==u"č":
-                new += r"{\v{c}}"
-            else:
-                new += c
-        return new
 
     def create_bibentry(self, refkey, reference):
         """
@@ -159,9 +120,9 @@ class BibTexPreprocessor(Preprocessor):
 
         try:
           self.references = nb["metadata"]["cite2c"]["citations"]
-          self.create_bibfile(resources["output_files_dir"]+"/"+resources["unique_key"]+".bib")
         except:
           print ("Did not find cite2c")
+        self.create_bibfile(resources["output_files_dir"]+"/"+resources["unique_key"]+".bib")
         for index, cell in enumerate(nb.cells):
             nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
         return nb, resources
