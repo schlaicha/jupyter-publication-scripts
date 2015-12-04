@@ -54,6 +54,8 @@ class BibTexPreprocessor(Preprocessor):
                 new += r"\&"
             elif c==u"á":
                 new += r"\'a"
+            elif c==u"é":
+                new += r"\'e"
             elif c==u"ó":
                 new += r"\'o"
             elif c==u"ú":
@@ -70,6 +72,8 @@ class BibTexPreprocessor(Preprocessor):
                 new += r"\"o"
             elif c==u"ü":
                 new += r"\"u"
+            elif c==u"č":
+                new += r"{\v{c}}"
             else:
                 new += c
         return new
