@@ -1,5 +1,4 @@
 ## TODO
-- rewrite revtex_nocode.tplx so that it can be inherited from nicely
 - modify preprocessors so that they only work if conversion to latex is made
 - make nicer example notebook
 
