@@ -14,4 +14,4 @@ pdflatex ExampleNotebook.tex > /dev/null 2>&1
 
 # cleanup temorary conversion and latex files
 rm *.bbl *.aux *.blg *.log *.out *Notes.bib *.tex
-#rm -rf ExampleNotebook_files
+rm -rf ExampleNotebook_files
