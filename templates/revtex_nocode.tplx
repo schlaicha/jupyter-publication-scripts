@@ -1,4 +1,4 @@
-((*- extends 'latex_nocode2.tplx' -*))
+((*- extends 'latex_nocode.tplx' -*))
 
 ((* block docclass *))
 \documentclass[reprint, floatfix, groupaddress, prb]{revtex4-1}
