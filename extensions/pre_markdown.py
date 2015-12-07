@@ -22,7 +22,7 @@ import re
 # Classes
 #-----------------------------------------------------------------------------
 
-class MarkdownPreprocessor(Preprocessor):
+class MarkdownPreprocessor(LatexPreprocessor):
     def __init__(self, **kw):
         """
         Public constructor
@@ -56,9 +56,9 @@ class MarkdownPreprocessor(Preprocessor):
             Additional resources used in the conversion process.  Allows
             preprocessors to pass variables into the Jinja engine.
         """
-
-        for index, cell in enumerate(nb.cells):
-            nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
+        if resources["latex"] != "":
+            for index, cell in enumerate(nb.cells):
+                nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
         return nb, resources
 
     def preprocess_cell(self, cell, resources, index):

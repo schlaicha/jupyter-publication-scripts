@@ -130,13 +130,14 @@ class BibTexPreprocessor(Preprocessor):
             preprocessors to pass variables into the Jinja engine.
         """
 
-        try:
-          self.references = nb["metadata"]["cite2c"]["citations"]
-        except:
-          print ("Did not find cite2c")
-        self.create_bibfile(resources["output_files_dir"]+"/"+resources["unique_key"]+".bib")
-        for index, cell in enumerate(nb.cells):
-            nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
+        if resources["latex"] != "":
+            try:
+                self.references = nb["metadata"]["cite2c"]["citations"]
+                self.create_bibfile(resources["output_files_dir"]+"/"+resources["unique_key"]+".bib")
+                for index, cell in enumerate(nb.cells):
+                    nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
+            except:
+              print ("Did not find cite2c")
         return nb, resources
 
     def preprocess_cell(self, cell, resources, index):
