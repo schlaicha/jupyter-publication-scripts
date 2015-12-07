@@ -61,12 +61,18 @@ class BibTexPreprocessor(Preprocessor):
         """
         entry  = "@article{" + refkey + ",\n"
 
-        entry += "  author = {"
-        entry += " and ".join(map(lambda a: unicode_tex.unicode_to_tex(a["family"]) + ", " + unicode_tex.unicode_to_tex(a["given"]), reference["author"]))
-        entry += "}, \n"
+        if ("author" in reference):
+            entry += "  author = {"
+            entry += " and ".join(map(lambda a: unicode_tex.unicode_to_tex(a["family"]) + ", " + unicode_tex.unicode_to_tex(a["given"]), reference["author"]))
+            entry += "}, \n"
+        else:
+            print("Warning: No author(s) of reference " + refkey)
 
         if ("title" in reference):
             entry += "  title = {" + unicode_tex.unicode_to_tex(reference["title"]) + "}, \n"
+        else:
+            print("Warning: No title of reference " + refkey)
+
         if ("issued" in reference):
             entry += "  year = {" + reference["issued"]["year"] + "}, \n"
         if ("container-title" in reference):
