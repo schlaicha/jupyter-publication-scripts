@@ -1,0 +1,18 @@
+((*- extends 'latex_nocode2.tplx' -*))
+
+% Author must be seperated from parent class due to affiliations present in other styles
+((* block maketitle *))
+    ((*- if nb.metadata["latex_metadata"]: -*))
+        ((*- if nb.metadata["latex_metadata"]["author"]: -*))
+            \author{((( nb.metadata["latex_metadata"]["author"] )))}
+        ((*- endif *))
+    ((*- else -*))
+        \author{Julius C. F. Schulz}
+    ((*- endif *))
+
+    ((( super() )))
+((* endblock maketitle *))
+
+((* block bibliography *))
+\bibliographystyle{plain}
+((* endblock bibliography *))
