@@ -112,6 +112,15 @@
     ((*- endfor -*))
 ((* endblock execute_result *))
 
+% avoid spurious javascript output
+((*- block data_text -*))
+    ((*- if not "IPython.core.display.Javascript" in output.data['text/plain'] -*))
+        \begin{verbatim}
+        ((( output.data['text/plain'] )))
+        \end{verbatim}
+    ((*- endif -*))
+((*- endblock -*))
+
 % Disable input cells
 ((* block input_group *))
 ((* endblock input_group *))
