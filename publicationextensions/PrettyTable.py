@@ -32,7 +32,8 @@ class PrettyTable(list):
         if extra_header is not None:
             if len(initlist[0]) != len(extra_header):
                 raise ValueError("Header list must have same length as data has columns.")
-            initlist = [extra_header]+map(lambda x: map(lambda xx: format(xx, self.formatstring), x), initlist)
+            initlist = [extra_header]+list(map(lambda x: map(lambda xx: format(xx, self.formatstring), x), initlist))
+#            initlist = [extra_header] + [format(xx, self.formatstring) for x in initlist for xx in x]
         super(PrettyTable, self).__init__(initlist)
 
     def latex_table_tabular(self):
