@@ -93,7 +93,7 @@
     ((*- endblock figure_wide -*))
 ((*- endmacro *))
 
-% Create caption for tables in output resulting from PrettyTable class, must be a longtable!!
+% Create caption for tables in output resulting from PrettyTable class
 ((* block execute_result scoped *))
     ((*- for type in output.data | filter_data_type -*))
         ((*- if type in ['text/latex']: -*))
@@ -106,6 +106,10 @@
             ((*- else -*))
                 (((output.data['text/latex'])))
             ((*- endif -*))
+        ((*- elif type in ['image/png'] -*))
+            ((( super.super() )))
+        ((*- elif type in ['image/jpg'] -*))
+                ((( super.super() )))
         ((*- else -*))
             ((( super() )))
         ((*- endif -*))
