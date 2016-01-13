@@ -28,7 +28,7 @@ class MarkdownPreprocessor(Preprocessor):
             Additional keyword arguments passed to parent
         """
 
-        self.colormatch = re.compile(r"<font color='(.*?)'>(.*?)</font>")
+        self.colormatch = re.compile(r"<font color='(.*?)'>(.*?)</font>", re.DOTALL)
 
         super(MarkdownPreprocessor, self).__init__(**kw)
 
