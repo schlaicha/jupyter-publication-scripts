@@ -112,7 +112,7 @@ class BibTexPreprocessor(Preprocessor):
         entry += "\n"
         return entry
 
-    def create_bibfile(self, filename):
+    def create_bibfile(self, resources, filename):
         """
         creates .bib with references from cite2c data in .ipynb JSON metadata
         references must be places in self.references beforehand
@@ -124,10 +124,16 @@ class BibTexPreprocessor(Preprocessor):
         """
         if not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename))
-        f = open(filename, "w")
+
+        data = ""
+
         for r in self.references:
-            f.write(self.create_bibentry(r, self.references[r]))
+            data += (self.create_bibentry(r, self.references[r]))
+        f = open(filename, "w")
+        f.write(data)
         f.close()
+
+        resources['outputs'][filename] = data
 
     def preprocess(self, nb, resources):
         """
@@ -165,7 +171,7 @@ class BibTexPreprocessor(Preprocessor):
 
         if "tex" in resources["output_extension"]:
             self.references = nb["metadata"]["cite2c"]["citations"]
-            self.create_bibfile(resources["output_files_dir"]+"/"+resources["unique_key"]+".bib")
+            self.create_bibfile(resources, resources["output_files_dir"]+"/"+resources["unique_key"]+".bib")
 
         for index, cell in enumerate(nb.cells):
             nb.cells[index], resources = self.preprocess_cell(cell, resources, index)

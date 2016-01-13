@@ -2,8 +2,11 @@
   "Exporter": {
     "preprocessors": [
       "pre_markdown.MarkdownPreprocessor",
-      "pre_cite2c.BibtexPreprocessor"
+      "pre_cite2c.BibTexPreprocessor"
     ]
   },
+  "template_path": [
+    "/Users/schulzj/Library/Jupyter/templates"
+  ],
   "version": 1
 }
