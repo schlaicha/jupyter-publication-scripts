@@ -99,7 +99,7 @@ def _activate(profile):
                 # manually merge setting if exist
                 if not 'pre_markdown.MarkdownPreprocessor' in config.Exporter.preprocessors:
                     config['Exporter']['preprocessors'].append('pre_markdown.MarkdownPreprocessor')
-                if not 'pre_cit2c.BibTexPreprocessor' in config.Exporter.preprocessors:
+                if not 'pre_cite2c.BibTexPreprocessor' in config.Exporter.preprocessors:
                     config['Exporter']['preprocessors'].append('pre_cite2c.BibTexPreprocessor')
             else:
                 my_config  = JSONFileConfigLoader('jupyter_nbconvert_config.json', dname).load_config()
