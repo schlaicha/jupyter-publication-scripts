@@ -133,7 +133,7 @@ class BibTexPreprocessor(Preprocessor):
         f.write(data)
         f.close()
 
-        resources['outputs'][filename] = data
+        resources['outputs'][filename] = data.encode("utf-8")
 
     def preprocess(self, nb, resources):
         """
