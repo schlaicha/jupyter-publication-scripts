@@ -1,11 +1,14 @@
-c = get_config()
-#c.Exporter.preprocessors = [ 'pre_cite2c.BibTexPreprocessor', 'pymdpreprocessor.PyMarkdownPreprocessor', 'pre_markdown.MarkdownPreprocessor' ]
-#c.TemplateExporter.template_path = ['../templates','.']
-c.Exporter.template_file = 'revtex_nocode'
-#c.Exporter.template_file = 'article_nocode'
+#--- nbextensions configuration ---
+from jupyter_core.paths import jupyter_config_dir, jupyter_data_dir
+import os
+import sys
 
-import re
-def re_replace(vars):
-    #print re.sub(vars[1], vars[2], vars[0])
-    return re.sub(vars[1], vars[2], vars[0])
-c.TemplateExporter.filters = { "re_replace" : re_replace}
+sys.path.append(os.path.join(jupyter_data_dir(), 'extensions'))
+
+c = get_config()
+c.Exporter.template_path = [ '.', os.path.join(jupyter_data_dir(), 'templates') ]
+
+import publicationextensions.replace as pbe_replace
+if not "filters" in c.TemplateExporter:
+  c.TemplateExporter.filters = {}
+c.TemplateExporter.filters["re_replace"] = pbe_replace.re_replace
