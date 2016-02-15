@@ -5,7 +5,7 @@ setup(name = 'jupyter-publication-scripts',
       maintainer = 'Alexander Schlaich',
       maintainer_email = 'aschlaich@physik.fu-berlin.de',
       download_url = 'https://github.com/schlaicha/jupyter-publication-scripts',
-      py_modules = ['publicationextensions.PrettyTable'],
+      py_modules = ['publicationextensions.PrettyTable', 'publicationextensions.replace'],
       install_requires=[
           'unicode_tex',
           'citeproc-py'

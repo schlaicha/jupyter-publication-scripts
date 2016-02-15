@@ -8,7 +8,8 @@ class PrettyTable(list):
         If the list is one dimensional it is converted to a single-column list, extra_header may
         then be either a list containing a single element or a string.
         """
-    def __init__(self, initlist=[], extra_header=None, print_latex_longtable=True, formatstring=""):
+    def __init__(self, initlist=[], extra_header=None, print_latex_longtable=True, 
+            span_page=False, formatstring=""):
         """
         Public constructor
 
@@ -24,27 +25,42 @@ class PrettyTable(list):
             custom format string for number conversion
         """
         self.print_latex_longtable = print_latex_longtable
+        self.span_page = span_page
         self.formatstring = formatstring
         if not isinstance(initlist[0], collections.Iterable):
-            initlist = map(lambda x: [x], initlist)
+            initlist = list(map(lambda x: [x], initlist))
             if isinstance(extra_header, str):
                 extra_header = [extra_header]
         if extra_header is not None:
             if len(initlist[0]) != len(extra_header):
                 raise ValueError("Header list must have same length as data has columns.")
             initlist = [extra_header]+list(map(lambda x: list(map(lambda xx: format(xx, self.formatstring), x)), initlist))
+#            initlist = [extra_header] + [format(xx, self.formatstring) for x in initlist for xx in x]
         super(PrettyTable, self).__init__(initlist)
 
     def latex_table_tabular(self):
-        latex = ["\\begin{tabular}"]
+        latex = []
+        if self.span_page:
+            latex.append("\\begin{table*}")
+        else:
+            latex.append("\\begin{table}")
+        latex.append("\\begin{tabular}")
         latex.append("{"+"|".join((["l"]*len(self[0])))+"}\n")
         for row in self:
             latex.append(" & ".join(map(format, row)))
             latex.append("\\\\ \n")
         latex.append("\\end{tabular}")
+        if self.span_page:
+            latex.append("\\end{table*}")
+        else:
+            latex.append("\\end{table}")
         return ''.join(latex)
     def latex_longtable(self):
-        latex = ["\\begin{longtable}[c]{@{}"]
+        latex = []
+        if self.span_page:
+            latex.append("\\begin{longtable*}[c]{@{}")
+        else:
+            latex.append("\\begin{longtable}[c]{@{}")
         latex.append("".join((["l"]*len(self[0]))))
         latex.append("@{}}\n")
         latex.append("\\toprule\\addlinespace\n")
@@ -55,7 +71,10 @@ class PrettyTable(list):
             if first:
                 latex.append("\\midrule\\endhead\n")
                 first = False
-        latex.append("\\bottomrule \n \\end{longtable}")
+        if self.span_page:
+            latex.append("\\bottomrule \n \\end{longtable*}")
+        else:
+            latex.append("\\bottomrule \n \\end{longtable}")
         return ''.join(latex)
 
     def _repr_html_(self):
