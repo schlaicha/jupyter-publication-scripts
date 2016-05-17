@@ -43,12 +43,16 @@ class PrettyTable(list):
         if self.span_page:
             latex.append("\\begin{table*}")
         else:
-            latex.append("\\begin{table}")
+            latex.append("\\begin{table}[ht]")
         latex.append("\\begin{tabular}")
         latex.append("{"+"|".join((["l"]*len(self[0])))+"}\n")
+        first = True
         for row in self:
             latex.append(" & ".join(map(format, row)))
             latex.append("\\\\ \n")
+            if first:
+                latex.append("\\hline \n")
+                first = False
         latex.append("\\end{tabular}")
         if self.span_page:
             latex.append("\\end{table*}")
