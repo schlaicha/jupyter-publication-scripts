@@ -21,6 +21,8 @@ class PrettyTable(list):
             list of captions for each column of initlist, can also be a string for one dimensional lists
         print_latex_longtable : bool
             if True create longtable in latex representation, otherwise output a simple tabular environment
+        span_page : bool
+            if True make table span the page using tge table* environment
         formatstring : str
             custom format string for number conversion
         """
